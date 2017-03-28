@@ -1,0 +1,11 @@
+Please write sufficient documentation (including "How to Run the Program") and explain your technical choices.
+
+How to Run the Program:
+1) Using an IDE, create a new project and input the code into the project folder.
+2) Change the portion of code at Line 50 in Keypad.java which denotes the file location of the Dictionary document. Locate the Dictionary document within your machine and input that file location within the FileReader() brackets.
+3) Run the code and input the question number which you are interested in.
+4) When done, press q and enter to exit.
+
+Technical Choices:
+I chose Eclipse as my IDE as I am familiar with it. The language I used for this program is Java because I have more experience with it in programming. 
+ 
