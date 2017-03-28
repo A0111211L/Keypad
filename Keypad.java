@@ -25,54 +25,82 @@ public class Keypad {
 		
 		Scanner scanner = new Scanner(System.in);
 	    System.out.println("Welcome to Justin's Keypad");
-	    System.out.println("Please enter question number: 1,2,3 or 4");
-	    qn = scanner.nextLine();
-	    System.out.println("What is your input?");
-		input = scanner.nextLine();
-	    switch (qn) {
-	    	case "1": 	System.out.printf("Input: %s\n", input);
-    	    			System.out.printf("Output: %d\n", keyPresses(keypadList, input)); // for Qn 1
-    	    			break;
-		    		
-	    	case "2":	System.out.printf("Input: %s\n", input);	    
-	    				System.out.printf("Output: %s\n", numberCombi(keypadList, input)); // for Qn 2
-	    				break;
-	    				
-	    	case "3":	System.out.printf("Input: %s\n", input);
-	    				letterCombi("", input, 0, letterCombinations, keypadList); // for Qn 3
-	    				System.out.println("Output: " + letterCombinations);
-//	    			    System.out.print(letterCombinations.size());
-	    				break;
-	    		
-	    	case "4":	System.out.printf("Input: %s\n", input);
-	    				letterCombi("", input, 0, letterCombinations, keypadList); // run code for Qn 3 to generate all letter combinations
-	    				try { // for Qn 4
-				    		fr = new FileReader("C:/Users/Justin/workspace/Keypad/bin/WordsRTF.RTF"); // Change this file location to where the Dictionary file is stored
-				    		br = new BufferedReader(fr);
-			
-				    		String currentLine;
-				    		while ((currentLine = br.readLine()) != null) {
-				    			for (String combi : letterCombinations) {
-				    				if(currentLine.equals(combi + "\\")) {   // I'm not sure if we should IgnoreCase when we match the words, might be better to do so.
-				    					wordCombinations.add(combi);
-				    					break;
-				    				}
-				    			}  
-				    			// System.out.println(currentLine);
-				    		}
-				    	} catch (IOException e) {
-				    		// TODO Auto-generated catch block
-				    		e.printStackTrace();
-				    	}
-				    	System.out.println("Output: " + wordCombinations);
-				    	// System.out.print(wordCombinations.size());
-				    	break;
-	    		
-	    	default: 	System.out.println("Please try again with a valid question number.");
-	    			 	break;
-	    
+	    while(true) {
+	    	letterCombinations = new ArrayList<String>();
+	    	wordCombinations = new ArrayList<String>();
+	    	input = "";
+	    	qn = "";
+	    	
+	    	System.out.println("Please enter question number: 1,2,3 or 4");
+	    	System.out.println("To exit, press q and enter");
+	    	qn = scanner.nextLine();
+	    	if (qn.equals("q")) {
+	    		System.exit(0);
+	    	}
+	    	System.out.println("What is your input?");
+	    	input = scanner.nextLine();
+	    	
+	    	switch (qn) {
+	    	
+		    	case "1": 	if (!isWord(input)) {
+		    					System.out.println("Invalid input! Please enter a word!\n");
+		    					break;
+		    				}
+		    				System.out.printf("Input: %s\n", input);
+		    				System.out.printf("Output: %d\n%n", keyPresses(keypadList, input)); // for Qn 1
+		    				break;
+
+		    	case "2":	if (!isWord(input)) {
+								System.out.println("Invalid input! Please enter a word!\n");
+								break;
+							}
+		    				System.out.printf("Input: %s\n", input);	    
+		    				System.out.printf("Output: %s\n%n", numberCombi(keypadList, input)); // for Qn 2
+		    				break;
+
+		    	case "3":	if (!isNumber(input)) {
+		    					System.out.println("Invalid input! Please enter a number!\n");
+		    					break;
+		    				}
+		    				System.out.printf("Input: %s\n", input);
+					    	letterCombi("", input, 0, letterCombinations, keypadList); // for Qn 3
+					    	System.out.println("Output: " + letterCombinations + "\n");
+					    	// System.out.print(letterCombinations.size());
+					    	break;
+
+		    	case "4":	if (!isNumber(input)) {
+								System.out.println("Invalid input! Please enter a number!\n");
+								break;
+							}
+		    				System.out.printf("Input: %s\n", input);
+		    				letterCombi("", input, 0, letterCombinations, keypadList); // run code for Qn 3 to generate all letter combinations
+					    	try { // for Qn 4
+					    		fr = new FileReader("C:/Users/Justin/workspace/Keypad/bin/WordsRTF.RTF"); // Change this file location to where the Dictionary file is stored
+					    		br = new BufferedReader(fr);
+				
+					    		String currentLine;
+					    		while ((currentLine = br.readLine()) != null) {
+					    			for (String combi : letterCombinations) {
+					    				if(currentLine.equals(combi + "\\")) {   // I'm not sure if we should IgnoreCase when we match the words, might be better to do so.
+					    					wordCombinations.add(combi);
+					    					break;
+					    				}
+					    			}  
+					    			// System.out.println(currentLine);
+					    		}
+					    	} catch (IOException e) {
+					    		// TODO Auto-generated catch block
+					    		e.printStackTrace();
+					    	}
+					    	System.out.println("Output: " + wordCombinations + "\n");
+					    	// System.out.print(wordCombinations.size());
+					    	break;
+
+		    	default: 	System.out.println("Please try again with a valid question number.");
+		    				break;
+
+	    	}
 	    }
-	    
 //	    File file = new File("C:/Users/Justin/workspace/Keypad/bin/WordsRTF.RTF"); 
 //	    if(file.exists() && !file.isDirectory()) { 
 //	        System.out.println("FOUND!");
@@ -127,4 +155,12 @@ public class Keypad {
 		}	
 	}
 
+	private static boolean isWord(String input) {
+		return input.matches("[a-zA-Z]+");
+	}
+	
+	private static boolean isNumber(String input) {
+		return input.matches("[0-9]+");
+	}
+	
 }
